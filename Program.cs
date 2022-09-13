@@ -15,11 +15,6 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
 
-            
-
-
-
-
         }
     }
 }

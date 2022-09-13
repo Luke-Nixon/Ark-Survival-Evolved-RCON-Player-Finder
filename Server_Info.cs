@@ -380,6 +380,35 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
                 else
                 {
                     // the player is on the list of friendly names, draw a green dot.
+
+                    PictureBox pictureBox_dot = new()
+                    {
+                        Name = "dot",
+                        Location = new System.Drawing.Point((int)red_dot_pos_width, (int)red_dot_pos_height),
+                        Size = new System.Drawing.Size(10, 10),
+                        TabStop = false,
+                        Image = Image.FromFile("media/green_dot.png"),
+                        SizeMode = PictureBoxSizeMode.StretchImage
+                    };
+
+                    tab.Controls.Add(pictureBox_dot);
+                    pictureBox_dot.BringToFront();
+                    player.icon = pictureBox_dot;
+
+                    // add the player label to the tab page.
+                    Label label_player_name = new()
+                    {
+                        Name = "dot", // named dot so it gets deleted
+                        AutoSize = true,
+                        Location = new System.Drawing.Point((int)red_dot_pos_width + 10, (int)red_dot_pos_height),
+                        Size = new System.Drawing.Size(100, 20),
+                        Text = player.name
+                    };
+
+                    tab.Controls.Add(label_player_name);
+                    label_player_name.BringToFront();
+
+
                 }
 
             });
