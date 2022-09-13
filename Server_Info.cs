@@ -337,7 +337,7 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
                 bool is_friendly = false;
                 foreach (string friendly_name in this.friendly_names)
                 {
-                    if (player.name.Contains(friendly_name) )
+                    if (player.name.Contains(friendly_name))
                     {
                         is_friendly = true;
                     }
@@ -415,84 +415,84 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
         }
 
 
-    // finds all UI elements named "dot" and deletes them.
-    // used to clear the UI before the creation of the new up to date player information.
-    private void Delete_player_dots()
-    {
-        this.tab!.BeginInvoke((MethodInvoker)delegate ()
+        // finds all UI elements named "dot" and deletes them.
+        // used to clear the UI before the creation of the new up to date player information.
+        private void Delete_player_dots()
         {
-            Control[] boxs = tab.Controls.Find("dot", true);
-
-            foreach (Control box in boxs)
+            this.tab!.BeginInvoke((MethodInvoker)delegate ()
             {
-                box.Dispose();
-            }
-        });
+                Control[] boxs = tab.Controls.Find("dot", true);
 
-    }
-
-
-    // Used to find all players and coordinates that are returned from the "listallplayerpos" response string.
-    // players are then added to the player_list.
-    private void Parse_response_string(string response)
-    {
-        // clear the local list textbox
-        this.RichTextBox_local_list_textbox!.BeginInvoke((MethodInvoker)delegate () { RichTextBox_local_list_textbox.Text = "\n"; });
-
-        // delete all old player dots
-        Delete_player_dots();
-
-        // clear the list of players
-        player_list = new List<Player_info>();
-
-        //split the response string into individual lines
-        string[] indivdual_lines = response.Split("\n");
-
-        // iterate over these lines
-        foreach (string line in indivdual_lines)
-        {
-            // if a line contains the beginning of a coordinate
-            if (line.Contains("), X="))
-            {
-                // get the vector
-                string vector = line.Split("), X=")[1];
-                string name = line.Split("), X=")[0];
-
-                // create a new player object to add the players info to.
-                Player_info player = new()
+                foreach (Control box in boxs)
                 {
-                    name = name,
-                    x = float.Parse(vector.Split("Y=")[0]),
-                    y = float.Parse(vector.Split("Y=")[1].Split("Z=")[0]),
-                    z = float.Parse(vector.Split("Z=")[1])
-                };
+                    box.Dispose();
+                }
+            });
 
-                // add the player to the player list
-                player_list.Add(player);
+        }
 
-                // create new player dots
-                Create_player_dots(player);
+
+        // Used to find all players and coordinates that are returned from the "listallplayerpos" response string.
+        // players are then added to the player_list.
+        private void Parse_response_string(string response)
+        {
+            // clear the local list textbox
+            this.RichTextBox_local_list_textbox!.BeginInvoke((MethodInvoker)delegate () { RichTextBox_local_list_textbox.Text = "\n"; });
+
+            // delete all old player dots
+            Delete_player_dots();
+
+            // clear the list of players
+            player_list = new List<Player_info>();
+
+            //split the response string into individual lines
+            string[] indivdual_lines = response.Split("\n");
+
+            // iterate over these lines
+            foreach (string line in indivdual_lines)
+            {
+                // if a line contains the beginning of a coordinate
+                if (line.Contains("), X="))
+                {
+                    // get the vector
+                    string vector = line.Split("), X=")[1];
+                    string name = line.Split("), X=")[0];
+
+                    // create a new player object to add the players info to.
+                    Player_info player = new()
+                    {
+                        name = name,
+                        x = float.Parse(vector.Split("Y=")[0]),
+                        y = float.Parse(vector.Split("Y=")[1].Split("Z=")[0]),
+                        z = float.Parse(vector.Split("Z=")[1])
+                    };
+
+                    // add the player to the player list
+                    player_list.Add(player);
+
+                    // create new player dots
+                    Create_player_dots(player);
+                }
             }
         }
     }
-}
 
 
-// player_info struct that contains information on the player
-public struct Player_info
-{
-    public string name = "";
-
-    public float x = 0;
-    public float y = 0;
-    public float z = 0;
-
-    public PictureBox? icon = null;
-
-    public Player_info()
+    // player_info struct that contains information on the player
+    public struct Player_info
     {
+        public string name = "";
+
+        public float x = 0;
+        public float y = 0;
+        public float z = 0;
+
+        public PictureBox? icon = null;
+
+        public Player_info()
+        {
+        }
     }
-}
 }
 
 
