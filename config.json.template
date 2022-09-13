@@ -1,0 +1,96 @@
+{
+	"friendly names": [
+		{
+			"name": "test"
+		},
+		{
+			"name": "test2"
+		}
+	],
+
+	"servers": [
+		{
+			"name": "aberration",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "the center",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "crystal",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "extinction",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "fjordur",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "genesis 1",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "genesis 2",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "the island",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "lost island",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "ragnarok",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "scorched earth",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+
+		},
+		{
+			"name": "valguero",
+			"ip": "your IP",
+			"port": "your port",
+			"password": "your password"
+		}
+	]
+}
