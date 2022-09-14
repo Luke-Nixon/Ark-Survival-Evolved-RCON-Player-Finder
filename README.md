@@ -16,3 +16,38 @@ This project has two dependencies that must be installed to run.
 - https://github.com/Challengermode/CoreRcon
 
 
+To connect to the server, the config.json.template file must be renamed to config.json and configured with the desired connection information. 
+For example:
+
+```json
+{
+	"friendly names": [
+		{
+			"name": "123"
+		},
+		{
+			"name": "myusername"
+		}
+	],
+
+	"servers": [
+		{
+			"name": "aberration",
+			"ip": "192.168.x.x",
+			"port": "28030",
+			"password": "supersecretpassword"
+
+		},
+		{
+			"name": "the center",
+			"ip": "192.168.x.x",
+			"port": "28030",
+			"password": "supersecretpassword"
+
+		}
+	]
+}
+```
+
+
+
