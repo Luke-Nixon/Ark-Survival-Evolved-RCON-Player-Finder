@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RconSharp;
 using System.Diagnostics;
 using System.Timers;
 
@@ -68,14 +67,14 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
 
                 label_server_name.AutoSize = true;
                 label_server_name.Location = new System.Drawing.Point(10, 142);
-                label_server_name.Name = "Map Name";
+                label_server_name.Name = "Server Name";
                 label_server_name.Size = new System.Drawing.Size(50, 20);
                 label_server_name.TabIndex = 7;
-                label_server_name.Text = "Server Port: " + server.name;
+                label_server_name.Text = "Server Name: " + server.name;
 
                 label_server_port.AutoSize = true;
                 label_server_port.Location = new System.Drawing.Point(10, 162);
-                label_server_port.Name = "Map Port";
+                label_server_port.Name = "Server Port";
                 label_server_port.Size = new System.Drawing.Size(50, 20);
                 label_server_port.TabIndex = 8;
                 label_server_port.Text = "Server Port: " + server.port;

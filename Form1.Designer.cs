@@ -101,8 +101,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1564, 908);
             this.Controls.Add(this.tabControl1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Ark Player Finder";
+            this.Text = "Ark Player Finder";
             this.tab_page_config.ResumeLayout(false);
             this.tab_page_config.PerformLayout();
             this.tabControl1.ResumeLayout(false);
