@@ -21,7 +21,8 @@ For example:
 
 ```json
 {
-	"friendly names": [
+	"friendly names": 
+	[
 		{
 			"name": "123"
 		},
@@ -30,7 +31,8 @@ For example:
 		}
 	],
 
-	"servers": [
+	"servers": 
+	[
 		{
 			"name": "aberration",
 			"ip": "192.168.x.x",
