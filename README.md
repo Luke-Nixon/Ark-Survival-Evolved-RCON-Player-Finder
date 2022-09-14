@@ -2,6 +2,9 @@
 
 RCON based player finder GUI for ark survival evolved 
 
+![alt text](https://i.imgur.com/MZu4t5Z.jpeg "preview")
+
+
 This program allows location of players on an ark survival evolved cluster using a GUI.
 The program converts the in-game unreal engine coordinates returned by the extended rcon command "listallplayerpos" and converts them to readable latitude and longitude coordinates using the formulas found at: https://ark.fandom.com/wiki/Coordinates
 
