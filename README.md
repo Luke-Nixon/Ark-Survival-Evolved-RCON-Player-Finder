@@ -2,7 +2,7 @@
 
 RCON based player finder GUI for ark survival evolved 
 
-![alt text](https://i.imgur.com/MZu4t5Z.jpeg "preview")
+![alt text](https://i.imgur.com/vuuSxe0.jpeg "preview")
 
 
 This program allows location of players on an ark survival evolved cluster using a GUI.
