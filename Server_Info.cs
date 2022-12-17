@@ -1,5 +1,6 @@
 ﻿using CoreRCON;
 using System.Net;
+using System.Net.Sockets;
 using System.Timers;
 
 namespace Ark_Survival_Evolved_RCON_Player_Finder
@@ -88,7 +89,7 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
             // Tell the timer what to do when it elapses
             send_command_timer.Elapsed += (sender, e) => Send_command_to_Server(sender!, e);
             // Set it to go off every 2 seconds and repeat.
-            send_command_timer.Interval = 2000;
+            send_command_timer.Interval = 500;
             send_command_timer.Enabled = false;
             send_command_timer.AutoReset = true;
         }
@@ -98,64 +99,49 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
         // Once the data has been retured, this function then displays the data using the "Parse_response_string" function.
         private async void Send_command_to_Server(object sender, ElapsedEventArgs e)
         {
-            // Create the connection if not already authed.
-            if (!authed)
-            {
-                try
-                {
-                    // Create a new conncetion using the data asigned from config.json.
-                    this.client = new RCON(IPAddress.Parse(ip!), (ushort)port!, password);
-                    await client.ConnectAsync();
-
-                    // Update authentication status.
-                    authed = true;
-                }
-                catch (Exception)
-                {
-                    // If an error connecting to the server has appeared, update the client in the UI textbox.
-                    this.RichTextBox_local_list_textbox!.BeginInvoke((MethodInvoker)delegate ()
-                    {
-                        RichTextBox_local_list_textbox.Text = "Connection could not be established";
-                    });
-                }
-            }
-
-
-            // If the client is already authenticated, send a command to the server.
             string response = "";
-            if (authed)
+            // Create the connection if not already authed.
+
+            try
             {
-                try
+                // Create a new conncetion using the data asigned from config.json.
+                this.client = new RCON(IPAddress.Parse(ip!), (ushort)port!, password);
+                await client.ConnectAsync();
+
+
+                // Send the command to the server
+
+                if (client != null)
                 {
-                    if (client != null)
-                    {
-                        // Send the command to the server
-                        Task<string> test = client.SendCommandAsync("listallplayerpos");
-                        // Wait for the response from the server for 5 seconds.
-                        response = await test.WaitAsync(new TimeSpan(0, 0, 5));
-                    }
-                    else
-                    {
-                        authed = false;
-                        client = null;
-                    }
+                    Task<string> test = client.SendCommandAsync("listallplayerpos");
+                    // Wait for the response from the server for 5 seconds.
+                    response = await test.WaitAsync(new TimeSpan(0, 0, 5));
+
+                    Parse_response_string(response);
+
+                    client.Dispose();
+                    this.client = null;
                 }
-                catch (Exception)
-                {
-                    // If an error connecting to the server has appeared, update the client in the UI textbox.
-                    this.RichTextBox_local_list_textbox!.BeginInvoke((MethodInvoker)delegate ()
-                    {
-                        RichTextBox_local_list_textbox.Text = "Connection Timed Out";
-                    });
-                }
-                Parse_response_string(response);
 
             }
-
-            // If no response from the server, reset the client and the authed. This will cause a retry of the connection on the next timer elapsed event. 
-            if (response == "")
+            catch (Exception ex)
             {
-                authed = false;
+                // If an error connecting to the server has appeared, update the client in the UI textbox.
+                this.RichTextBox_local_list_textbox!.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    RichTextBox_local_list_textbox.Text = "Connection could not be established";
+                });
+                if (client != null)
+                {
+                    try
+                    {
+                        client.Dispose();
+                    }
+                    catch (System.Net.Sockets.SocketException ex1) 
+                    { 
+                        // no need to dispose as this socket is not connected.
+                    }
+                }
                 this.client = null;
             }
         }
