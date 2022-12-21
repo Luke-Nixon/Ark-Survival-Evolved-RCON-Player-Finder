@@ -1,4 +1,4 @@
-﻿using CoreRCON;
+﻿using RconSharp;
 using System.Net;
 using System.Net.Sockets;
 using System.Timers;
@@ -31,11 +31,9 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
         /// </summary>
         public string? password = "";
 
-        // The authed boolean is used to keep track of the authenticated state of the connection.
-        private bool authed = false;
 
-        // the CoreRCON.RCON client that is used to create a connection to the server.
-        private RCON? client;
+        // the rcon client that is used to create a connection to the server.
+        private RconClient? client;
 
         /// <summary>
         /// The textbox that is used to display the data that arives from each server.
@@ -80,6 +78,9 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
         /// </summary>
         public List<string> friendly_names = new();
 
+        public bool in_progress = false;
+
+
         /// <summary>
         /// Constructor for the Server_Info class.
         /// Configures the timer to apply the send command function when a new instance of Server_Info is created.
@@ -99,50 +100,55 @@ namespace Ark_Survival_Evolved_RCON_Player_Finder
         // Once the data has been retured, this function then displays the data using the "Parse_response_string" function.
         private async void Send_command_to_Server(object sender, ElapsedEventArgs e)
         {
-            string response = "";
-            // Create the connection if not already authed.
-
-            try
+            // only attempt to send data when no other attempt is in progress.
+            if (this.in_progress == false)
             {
-                // Create a new conncetion using the data asigned from config.json.
-                this.client = new RCON(IPAddress.Parse(ip!), (ushort)port!, password);
-                await client.ConnectAsync();
+                this.in_progress = true;
+                string response = "";
 
+                // Create the connection if not already authed.
 
-                // Send the command to the server
-
-                if (client != null)
+                try
                 {
-                    Task<string> test = client.SendCommandAsync("listallplayerpos");
-                    // Wait for the response from the server for 5 seconds.
-                    response = await test.WaitAsync(new TimeSpan(0, 0, 5));
+                    this.client = RconClient.Create(this.ip, (ushort)port!);
 
-                    Parse_response_string(response);
+                    // TRY LOCKING THIS METHOD?
 
-                    client.Dispose();
-                    this.client = null;
-                }
+                    await client.ConnectAsync();
 
-            }
-            catch (Exception ex)
-            {
-                // If an error connecting to the server has appeared, update the client in the UI textbox.
-                this.RichTextBox_local_list_textbox!.BeginInvoke((MethodInvoker)delegate ()
-                {
-                    RichTextBox_local_list_textbox.Text = "Connection could not be established";
-                });
-                if (client != null)
-                {
-                    try
+                    var authenticated = await client.AuthenticateAsync(password);
+
+                    if (authenticated)
                     {
-                        client.Dispose();
+                        // Send the command to the server
+                        response = await client.ExecuteCommandAsync("listallplayerpos");
+
+                        Parse_response_string(response);
+
+                        client.Disconnect();
+                        client = null;
                     }
-                    catch (System.Net.Sockets.SocketException ex1) 
-                    { 
-                        // no need to dispose as this socket is not connected.
+                    else
+                    {
+                        client.Disconnect();
+                        client = null;
+
+                        this.RichTextBox_local_list_textbox!.BeginInvoke((MethodInvoker)delegate () { RichTextBox_local_list_textbox.Text = "No Response"; });
                     }
+
+
                 }
-                this.client = null;
+                catch (Exception ex)
+                {
+                    if (client != null)
+                    {
+                        client.Disconnect();
+                    }
+                    client = null;
+
+                    this.RichTextBox_local_list_textbox!.BeginInvoke((MethodInvoker)delegate () { RichTextBox_local_list_textbox.Text = ex.ToString(); });
+                }
+                this.in_progress = false;
             }
         }
 
